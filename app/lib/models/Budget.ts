@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { models, Schema } from "mongoose";
 import { required, string } from "zod/v4-mini";
 
 const budgetSchema = new Schema({
@@ -7,4 +7,4 @@ const budgetSchema = new Schema({
     monthlyLimit: { type: Number, required: true }
 })
 
-module.exports = mongoose.model("Budget", budgetSchema);
+export default models.Budget || mongoose.model("Budget", budgetSchema);

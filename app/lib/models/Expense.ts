@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { models, Schema } from "mongoose";
 
 const expenseSchema = new Schema({
     userId: { type: Schema.Types.ObjectId, required: true },
@@ -9,4 +9,4 @@ const expenseSchema = new Schema({
     notes: String
 }, { timestamps: true })
 
-module.exports = mongoose.model("Expense", expenseSchema);
+export default models.Expense || mongoose.model("Expense", expenseSchema);
