@@ -25,9 +25,10 @@ const BudgetManager = () => {
     const fetchBudgets = async () => {
         const res = await axios.get("/api/budget/alerts", { withCredentials: true });
         setBudgets(res.data);
+        console.log("data", res.data)
         const resAll = await axios.get("/api/budget", { withCredentials: true });
         setAllBudgets(resAll.data);
-        console.log(resAll.data);
+        console.log("All data", resAll.data);
 
     };
 

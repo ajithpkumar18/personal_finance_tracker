@@ -2,7 +2,6 @@ import { connectDB } from "@/app/lib/db";
 import Budget from "@/app/lib/models/Budget";
 import Expense from "@/app/lib/models/Expense";
 import User from "@/app/lib/models/user";
-import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -12,21 +11,8 @@ export async function GET(req: NextRequest) {
         if (!userId) {
             return NextResponse.json({ message: "Missing userId in headers" }, { status: 400 });
         }
-        const expenses = await Expense.aggregate([
-            {
-                $match: {
-                    userId: new mongoose.Types.ObjectId(userId),
-                }
-            },
-            {
-                $group: {
-                    _id: "$category",
-                    total: { $sum: "$amount" }
-                }
-            }
-        ]);
         const AllExpenses = await Expense.find({ userId });
-        return NextResponse.json({ AllExpenses, expenses }, { status: 200 })
+        return NextResponse.json(AllExpenses, { status: 200 })
     }
     catch (err) {
         return NextResponse.json(err, { status: 500 })
