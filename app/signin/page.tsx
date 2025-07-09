@@ -41,16 +41,10 @@ export default function SignInPage() {
 
   };
 
-  const emailSchema = z.object({
-    email: z.string().email('Invalid email address'),
-  });
-
-
-
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (validatePassword() && emailSchema.safeParse(email).success) {
+    if (validatePassword()) {
       axios.post('/api/auth/login', {
         email,
         password
@@ -119,7 +113,7 @@ export default function SignInPage() {
           </p>
           <button
             type="submit"
-            className='flex justify-center items-center p-2 gap-2 w-[404px] h-[56px] bg-blue-600 rounded-2xl'
+            className='flex justify-center items-center p-2 gap-2 w-[404px] h-[56px] bg-blue-600 rounded-2xl cursor-pointer'
           >
             <p className='w-16 h-5 font-bold text-[16px] leading-[140%] tracking-[0.2px] text-white'>Sign In</p>
           </button>
