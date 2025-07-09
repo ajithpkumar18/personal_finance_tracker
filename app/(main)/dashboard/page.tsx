@@ -3,7 +3,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import {
-    PieChart, Pie, Cell, Tooltip as RechartsTooltip, Legend as RechartsLegend,
+    PieChart, Pie, Cell, Tooltip as RechartsTooltip,
     LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer,
     Tooltip,
     Legend
@@ -12,7 +12,7 @@ import {
 const COLORS = ["#f87171", "#60a5fa", "#34d399", "#facc15", "#c084fc"];
 
 const Dashboard = () => {
-    // const [loading, setLoading] = useState(true);
+
     const [spendingData, setSpendingData] = useState({
         totalSpent: 0,
         topCategory: "",
@@ -48,7 +48,6 @@ const Dashboard = () => {
         value,
     }));
 
-    // if (loading) return <p className="p-6 text-center">Loading dashboard...</p>;
 
     return (
         <div className="p-6 w-5xl mx-auto">
@@ -104,7 +103,7 @@ const Dashboard = () => {
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="date" />
                             <YAxis />
-                            <RechartsTooltip content={<CustomTooltip />} />
+                            <RechartsTooltip />
                             <Line type="monotone" dataKey="amount" stroke="#3b82f6" strokeWidth={2} />
                         </LineChart>
                     </ResponsiveContainer>
@@ -116,19 +115,3 @@ const Dashboard = () => {
 
 export default Dashboard;
 
-const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-        return (
-            <div className="bg-gray-300 p-2 border rounded shadow text-sm">
-                <p className="font-semibold text-gray-800">{label}</p>
-                {payload.map((entry: any, index: number) => (
-                    <p key={index} className="text-blue-600 font-extrabold">
-                        {entry.name.charAt(0).toUpperCase() + entry.name.slice(1)}: ₹{entry.value.toLocaleString()}
-                    </p>
-                ))}
-            </div>
-        );
-    }
-
-    return null;
-};

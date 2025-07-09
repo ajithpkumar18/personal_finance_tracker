@@ -4,7 +4,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "@/app/lib/models/user"
 import { connectDB } from "@/app/lib/db";
-import { cookies } from "next/headers";
 
 const passwordSchema = z
     .string()
@@ -43,7 +42,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ message: "Invalid password" }, { status: 400 });
         }
 
-        let token = jwt.sign({ id: newUser._id, isAdmin: newUser.isAdmin }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
+        const token = jwt.sign({ id: newUser._id, isAdmin: newUser.isAdmin }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
 
         const response = NextResponse.json({ id: newUser._id, email: newUser.email, token: token }, { status: 200 })
 

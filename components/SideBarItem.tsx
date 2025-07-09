@@ -8,8 +8,6 @@ interface SidebarItemProps {
 }
 
 const SidebarItem = ({
-  activeicon,
-  inactiveicon,
   text,
   path,
 }: SidebarItemProps) => {
@@ -30,11 +28,11 @@ const SidebarItem = ({
         } px-5 py-2 mb-4 gap-4 active:bg-gray-600 cursor-pointer transition`}
     >
       <span>
-        <img
+        {/* <img
           src={isActive ? activeicon : inactiveicon}
           alt=""
           className="w-5 h-5"
-        />
+        /> */}
       </span>
       <span className="text-md">{text}</span>
     </div>

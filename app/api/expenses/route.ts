@@ -62,7 +62,7 @@ export async function PATCH(req: NextRequest) {
         return NextResponse.json(updated, { status: 200 })
 
     } catch (err) {
-        return NextResponse.json("error", { status: 500 })
+        return NextResponse.json({ "error": err }, { status: 500 })
     }
 }
 
@@ -80,7 +80,7 @@ export async function DELETE(req: NextRequest) {
 
         return NextResponse.json({ message: "Expense deleted", deleted });
     } catch (err) {
-        return NextResponse.json({ message: "Failed to delete expense" }, { status: 500 });
+        return NextResponse.json({ message: "Failed to delete expense", err }, { status: 500 });
     }
 }
 

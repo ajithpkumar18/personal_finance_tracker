@@ -1,8 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
+
+type Budget = {
+    category: string,
+    spent: number,
+    limit: number,
+    percent: number,
+    status: string,
+    month: string
+}
 
 const BudgetManager = () => {
     const [budgets, setBudgets] = useState([]);
@@ -24,7 +33,7 @@ const BudgetManager = () => {
 
 
 
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         await axios.post("/api/budget", form, { withCredentials: true });
         setForm({ ...form, limit: "" });
@@ -68,7 +77,7 @@ const BudgetManager = () => {
 
             <h2 className="text-lg font-medium mb-2">Budget Alerts</h2>
             <ul className="space-y-2">
-                {budgets.map((b: any, idx) => (
+                {budgets.map((b: Budget, idx) => (
                     <li
                         key={idx}
                         className={`p-3 rounded shadow text-sm flex justify-between items-center ${b.status === "over"
@@ -94,7 +103,7 @@ const BudgetManager = () => {
 
             <h2 className="text-lg font-medium my-2">All Budget</h2>
             <ul className="space-y-2">
-                {Allbudgets.map((b: any, idx) => (
+                {Allbudgets.map((b: Budget, idx) => (
                     <li
                         key={idx}
                         className={`p-3 rounded shadow text-sm flex justify-between items-center ${b.status === "over"

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-import z, { set } from 'zod';
+import z from 'zod';
 import { useRouter } from 'next/navigation';
 
 const passwordSchema = z
@@ -46,9 +46,11 @@ export default function SignInPage() {
   });
 
 
+
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (validatePassword()) {
+    if (validatePassword() && emailSchema.safeParse(email).success) {
       axios.post('/api/auth/login', {
         email,
         password
@@ -85,7 +87,7 @@ export default function SignInPage() {
         <div className='flex flex-col items-start p-0 gap-4 w-[404px] h-[200px]'>
 
           <div className='flex items-center gap-3 px-2 py-4 w-[404px] h-[56px] rounded-xl border border-custom-grey-200 self-stretch'>
-            <img src='/src/assets/user.png' className='w-6 h-6' alt='user' />
+            {/* <img src='/src/assets/user.png' className='w-6 h-6' alt='user' /> */}
             <input
               style={{ outline: 'none' }}
               type='text'
@@ -99,7 +101,7 @@ export default function SignInPage() {
 
           </div>
           <div className=' box-border flex items-center gap-3 px-2 py-4 w-[404px] h-[56px] rounded-xl border border-custom-grey-200 self-stretch'>
-            <img src='/src/assets/Group.svg' className='w-6 h-6' alt='user' />
+            {/* <img src='/src/assets/Group.svg' className='w-6 h-6' alt='user' /> */}
 
             <input type={showPassword ? 'text' : 'password'}
               className='w-full'
@@ -108,7 +110,7 @@ export default function SignInPage() {
               placeholder='Password'
               onChange={(e) => setPassword(e.target.value)}
             />
-            <img onClick={toggleShowPassword} className='w-6 h-7 pr-1' src='/src/assets/eye.svg' alt='' />
+            <button onClick={toggleShowPassword} className='w-6 h-7 pr-1' >👁️</button>
 
           </div>
           {passwordError && <p className='text-red-500'>{passwordError}</p>}
@@ -131,10 +133,10 @@ export default function SignInPage() {
           </div>
           <div className='flex items-center justify-center p-0 gap-6 w-[404px] h-11'>
             <div className='box-border flex flex-row justify-center items-center p-3 w-24 h-11 border border-custom-grey-200 rounded-lg'>
-              <img src='/src/assets/google.svg' className='w-6 h-6' alt='google' />
+              {/* <img src='/src/assets/google.svg' className='w-6 h-6' alt='google' /> */}
             </div>
             <div className='box-border flex flex-row justify-center items-center p-3 w-24 h-11 border border-custom-grey-200 rounded-lg'>
-              <img src='/src/assets/akar-icons_facebook-fill.svg' className='w-6 h-6' alt='facebook' />
+              {/* <img src='/src/assets/akar-icons_facebook-fill.svg' className='w-6 h-6' alt='facebook' /> */}
             </div>
           </div>
         </div>

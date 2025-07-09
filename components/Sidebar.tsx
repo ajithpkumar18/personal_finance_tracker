@@ -1,7 +1,7 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
-import axios from "axios";
+import { useRouter } from "next/navigation";
+import axios, { AxiosError } from "axios";
 import SidebarItem from "./SideBarItem";
 
 const items = [
@@ -26,7 +26,7 @@ const items = [
 ];
 
 export default function Sidebar({ className = "" }: { className?: string }) {
-    const pathname = usePathname();
+
     const router = useRouter();
 
     const handleLogout = async () => {
@@ -35,9 +35,9 @@ export default function Sidebar({ className = "" }: { className?: string }) {
             localStorage.removeItem("authToken");
             alert("Logged out successfully!");
             router.push("/signin");
-        } catch (err: any) {
-            console.error("Logout failed:", err);
-            alert(err.response?.data?.message || "Logout failed");
+        } catch (err: unknown) {
+            const error = err as AxiosError<{ message: string }>
+            alert(error.response?.data?.message || "Logout failed");
         }
     };
 
@@ -45,7 +45,7 @@ export default function Sidebar({ className = "" }: { className?: string }) {
         <div className={`top-0 left-0 w-96 ${className}`}>
             <div className="m-4 rounded-xl border border-slate-700 bg-gray-700">
                 <div className="flex p-6 items-center gap-3">
-                    <img src="/assets/Logo.svg" alt="Logo" className="w-8 h-8" />
+                    {/* <img src="/assets/Logo.svg" alt="Logo" className="w-8 h-8" /> */}
                     <p className="text-3xl font-bold tracking-wide">HRMS</p>
                 </div>
 
@@ -64,7 +64,7 @@ export default function Sidebar({ className = "" }: { className?: string }) {
                         className="flex w-full items-center border-l-2 text-gray-500 px-5 py-2 mb-4 gap-4 hover:bg-gray-200 cursor-pointer"
                         onClick={handleLogout}
                     >
-                        <img src="/assets/dashboard/sidebar/setting.svg" alt="Logout" className="w-5 h-5" />
+                        {/* <img src="/assets/dashboard/sidebar/setting.svg" alt="Logout" className="w-5 h-5" /> */}
                         <span className="text-md">Logout</span>
                     </div>
                 </div>

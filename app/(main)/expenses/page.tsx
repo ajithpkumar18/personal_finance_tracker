@@ -3,9 +3,16 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
-
+interface Expense {
+    _id: string;
+    amount: number;
+    category: string;
+    date: string;
+    paymentMethod: string;
+    notes?: string;
+}
 const ExpenseManager = () => {
-    const [expenses, setExpenses] = useState([]);
+    const [expenses, setExpenses] = useState<Expense[]>([]);
     const [form, setForm] = useState({
         amount: "",
         category: "Food",
@@ -16,7 +23,7 @@ const ExpenseManager = () => {
     const [filter, setFilter] = useState({ category: "", paymentMethod: "", startDate: "", q: "" });
     const [editingId, setEditingId] = useState<string | null>(null);
 
-    const fetchExpenses = async () => {
+    const reFetch = async () => {
         const res = await axios.get("/api/expenses/filter", {
             params: filter,
             withCredentials: true,
@@ -25,10 +32,19 @@ const ExpenseManager = () => {
     };
 
     useEffect(() => {
+        const fetchExpenses = async () => {
+            const res = await axios.get("/api/expenses/filter", {
+                params: filter,
+                withCredentials: true,
+            });
+            setExpenses(res.data);
+        };
+
         fetchExpenses();
     }, [filter]);
 
-    const handleSubmit = async (e: any) => {
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (editingId) {
             await axios.patch(`/api/expenses/${editingId}`, form, { withCredentials: true });
@@ -37,7 +53,12 @@ const ExpenseManager = () => {
         }
         setForm({ amount: "", category: "Food", date: dayjs().format("YYYY-MM-DD"), paymentMethod: "UPI", notes: "" });
         setEditingId(null);
-        fetchExpenses();
+
+
+
+
+
+        reFetch();
     };
 
     const handleDelete = async (id: string) => {
@@ -47,12 +68,12 @@ const ExpenseManager = () => {
                 expenseId: id
             }
         });
-        fetchExpenses();
+        reFetch();
     };
 
-    const handleEdit = (exp: any) => {
+    const handleEdit = (exp: Expense) => {
         setForm({
-            amount: exp.amount,
+            amount: exp.amount.toString(),
             category: exp.category,
             date: dayjs(exp.date).format("YYYY-MM-DD"),
             paymentMethod: exp.paymentMethod,
@@ -112,7 +133,7 @@ const ExpenseManager = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {expenses.map((exp: any) => (
+                        {expenses.map((exp: Expense) => (
                             <tr key={exp._id} className="border-b hover:bg-gray-800">
                                 <td className="p-2">₹{exp.amount}</td>
                                 <td className="p-2">{exp.category}</td>

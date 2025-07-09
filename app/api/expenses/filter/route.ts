@@ -2,6 +2,17 @@ import { connectDB } from "@/app/lib/db";
 import Expense from "@/app/lib/models/Expense";
 import { NextRequest, NextResponse } from "next/server";
 
+type ExpenseFilter = {
+    userId: string;
+    date?: {
+        $gte?: string;
+        $lte?: string;
+    };
+    category?: string;
+    paymentMethod?: string;
+    notes?: { $regex: string; $options: string };
+};
+
 export async function GET(req: NextRequest) {
     try {
         const userId = req.headers.get("userId");
@@ -18,7 +29,7 @@ export async function GET(req: NextRequest) {
         const paymentMethod = searchParams.get("paymentMethod");
         const searchText = searchParams.get("q");
 
-        const filter: any = { userId };
+        const filter: ExpenseFilter = { userId };
 
         if (startDate || endDate) {
             filter.date = {};

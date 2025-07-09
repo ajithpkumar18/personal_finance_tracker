@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
     try {
         const userId = req.headers.get("userId");
+        connectDB();
         if (!userId) {
             return NextResponse.json({ message: "Missing userId in headers" }, { status: 400 });
         }
