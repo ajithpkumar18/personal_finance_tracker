@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+    console.log("post")
     try {
         const body = await req.json();
         const { date, category, paymentMethod, notes, amount } = body;

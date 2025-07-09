@@ -36,13 +36,11 @@ export async function GET(req: NextRequest) {
         ]);
 
         const month = monthEnd.toISOString().slice(0, 7);
-        console.log(expenses);
 
         const budgets = await Budget.find({ userId, month });
 
         const alerts = budgets.map(budget => {
             const spent = expenses.find(e => e._id === budget.category)?.total || 0;
-            console.log(spent);
 
             const percent = (spent / budget.limit) * 100;
 
@@ -55,7 +53,8 @@ export async function GET(req: NextRequest) {
                 spent,
                 limit: budget.limit,
                 percent: Number(percent.toFixed(2)),
-                status
+                status,
+                month: budget.month
             };
         });
 

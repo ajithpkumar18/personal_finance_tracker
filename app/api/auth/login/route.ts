@@ -44,16 +44,18 @@ export async function POST(req: NextRequest) {
         }
 
         let token = jwt.sign({ id: newUser._id, isAdmin: newUser.isAdmin }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
-        const cookieStore = await cookies();
-        cookieStore.set("access_token", token, {
+
+        const response = NextResponse.json({ id: newUser._id, email: newUser.email, token: token }, { status: 200 })
+
+        response.cookies.set("access_token", token, {
             httpOnly: true,
             secure: false,
             sameSite: "lax",
             path: "/",
-            maxAge: 60 * 60 * 1000
+            maxAge: 60 * 60
         })
 
-        return NextResponse.json({ id: newUser._id, email: newUser.email, token: token }, { status: 200 })
+        return response;
 
     } catch (err) {
         console.log(err)

@@ -1,16 +1,31 @@
 import { connectDB } from "@/app/lib/db";
 import Budget from "@/app/lib/models/Budget";
+import Expense from "@/app/lib/models/Expense";
 import User from "@/app/lib/models/user";
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
     try {
         const userId = req.headers.get("userId");
-        console.log(userId);
-        const month = new Date().toISOString().slice(0, 7);
-        const existingBudget = await Budget.find({ userId });
-        console.log(existingBudget)
-        return NextResponse.json(existingBudget, { status: 200 })
+        if (!userId) {
+            return NextResponse.json({ message: "Missing userId in headers" }, { status: 400 });
+        }
+        const expenses = await Expense.aggregate([
+            {
+                $match: {
+                    userId: new mongoose.Types.ObjectId(userId),
+                }
+            },
+            {
+                $group: {
+                    _id: "$category",
+                    total: { $sum: "$amount" }
+                }
+            }
+        ]);
+        const AllExpenses = await Expense.find({ userId });
+        return NextResponse.json({ AllExpenses, expenses }, { status: 200 })
     }
     catch (err) {
         return NextResponse.json(err, { status: 500 })
@@ -20,9 +35,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
     try {
         const userId = await req.headers.get("userId");
-        const { category, limit } = await req.json();
-
-        const month = new Date().toISOString().slice(0, 7);
+        const { category, limit, month } = await req.json();
         console.log(month);
         const user = await User.findById(userId);
 
