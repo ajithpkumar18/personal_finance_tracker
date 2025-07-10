@@ -4,7 +4,6 @@ import axios from 'axios';
 
 import z from 'zod';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 
 const passwordSchema = z
   .string()
@@ -46,18 +45,16 @@ export default function SignInPage() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validatePassword()) {
-      axios.post('/api/auth/login', {
+      axios.post('/api/auth/signup', {
         email,
         password
-      }, {
-        withCredentials: true
       })
         .then((response) => {
           if (response.status === 200) {
             alert(response.status)
             console.log(response.data)
 
-            router.push('/dashboard');
+            router.push('/signin');
 
             localStorage.setItem('user', JSON.stringify(response.data));
           }
@@ -76,7 +73,7 @@ export default function SignInPage() {
       </style>
       <form onSubmit={handleSubmit} className='flex flex-col gap-6 items-center mx-auto size-[404px] h-[636px] '>
         <div className='w-[274px] h-7 mt-4 flex items-center justify-center'> <p className='font-bold text-2xl leading-(125%) tracking-[0.2px] text-custom-grey-900'>
-          Sign In
+          Sign Up
         </p>
         </div>
         <div className='flex flex-col items-start p-0 gap-4 w-[404px] h-[200px]'>
@@ -116,16 +113,8 @@ export default function SignInPage() {
             type="submit"
             className='flex justify-center items-center p-2 gap-2 w-[404px] h-[56px] bg-blue-600 rounded-2xl cursor-pointer'
           >
-            <p className='w-16 h-5 font-bold text-[16px] leading-[140%] tracking-[0.2px] text-white'>Sign In</p>
+            <p className='w-16 h-5 font-bold text-[16px] leading-[140%] tracking-[0.2px] text-white'>Sign Up</p>
           </button>
-          <button
-            type="button"
-            onClick={() => router.push("/signup")}
-            className='flex justify-center items-center p-2 gap-2 w-[404px] h-[56px] bg-white text-blue-600 rounded-2xl cursor-pointer'
-          >
-            <p className='w-16 h-5 font-bold text-[16px] leading-[140%] tracking-[0.2px]'>Sign up</p>
-          </button>
-
         </div>
       </form></div>
 
