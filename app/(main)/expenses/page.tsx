@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
+import Suggestion from "@/components/Suggestion";
 interface Expense {
     _id: string;
     amount: number;
@@ -22,7 +23,7 @@ const ExpenseManager = () => {
     });
     const [filter, setFilter] = useState({ category: "", paymentMethod: "", startDate: "", q: "" });
     const [editingId, setEditingId] = useState<string | null>(null);
-
+    const [suggestion, setSuggestion] = useState<string[]>();
     const reFetch = async () => {
         const res = await axios.get("/api/expenses/filter", {
             params: filter,
@@ -39,9 +40,21 @@ const ExpenseManager = () => {
             });
             setExpenses(res.data);
         };
-
         fetchExpenses();
     }, [filter]);
+
+    useEffect(() => {
+        console.log("Running");
+
+        if (expenses.length > 0) {
+            const FetchingSuggest = async () => {
+                const suggestions = await sendExpensesToFlask(expenses);
+                setSuggestion(suggestions);
+            };
+            FetchingSuggest();
+        }
+    }, [expenses]);
+
 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -85,7 +98,7 @@ const ExpenseManager = () => {
     return (
         <div className="w-5xl mx-auto p-6">
             <h1 className="text-xl font-semibold mb-4">Manage Expenses</h1>
-
+            {suggestion && <Suggestion suggestions={suggestion} />}
             <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-900 p-4 shadow rounded mb-6">
                 <input type="number" required placeholder="Amount" value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })} className="border p-2 rounded" />
                 <select value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} className="border p-2 rounded bg-gray-800">
@@ -154,3 +167,24 @@ const ExpenseManager = () => {
 };
 
 export default ExpenseManager;
+
+const sendExpensesToFlask = async (data: Expense[]) => {
+    const expenses = data;
+    console.log(data);
+
+    try {
+        const res = await axios.post("http://localhost:5000/suggestions", {
+            expenses,
+        }, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        console.log("Suggestions:", res.data.suggestions);
+        return res.data.suggestions;
+    } catch (err) {
+        console.error("Error getting suggestions:", err);
+        return undefined;
+    }
+};
