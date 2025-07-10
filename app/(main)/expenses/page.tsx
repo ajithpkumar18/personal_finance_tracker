@@ -173,7 +173,7 @@ const sendExpensesToFlask = async (data: Expense[]) => {
     console.log(data);
 
     try {
-        const res = await axios.post("http://localhost:5000/suggestions", {
+        const res = await axios.post("https://smart-suggestions.onrender.com/suggestions", {
             expenses,
         }, {
             headers: {
