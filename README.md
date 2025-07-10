@@ -20,17 +20,32 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+# 💰 Personal Finance Tracker+
 
-To learn more about Next.js, take a look at the following resources:
+A full-stack Personal Finance Tracker app built using **Next.js**, **MongoDB**, and **Python (Flask)** for intelligent suggestions.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+> 🚀 Easily manage, analyze, and optimize your spending with smart insights.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📌 Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### ✅ Expense Management
+- Add, edit, delete daily expenses
+- Filter by category, date, or payment method
+- Search expenses by notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### ✅ Budget & Alerts
+- Set monthly budget for each category
+- Real-time alert if you exceed 80% or 100% of your budget
+
+### ✅ Dashboard
+- Total spending overview
+- Pie & line charts using **Recharts**
+- Top spending categories and payment methods
+
+### ✅ Smart Suggestions (via Flask API)
+- Analyzes past 30 days of expenses
+- Provides actionable tips like:
+  - "You're spending a lot on Food. Try to reduce it by 15%."
+  - "Travel expenses have increased this month."
