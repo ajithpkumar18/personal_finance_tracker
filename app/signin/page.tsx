@@ -4,7 +4,6 @@ import axios from 'axios';
 
 import z from 'zod';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 
 const passwordSchema = z
   .string()
